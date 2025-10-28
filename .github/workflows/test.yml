@@ -75,11 +75,6 @@ jobs:
       - name: Lint PHP
         run: php .Build/bin/parallel-lint --exclude .Build .
 
-      - name: Install GNU Parallel
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y parallel
-
       - name: Run PHPUnit
         if: ${{ success() || failure() }}
         run: find 'tests' -wholename '*Test.php' | parallel --gnu 'echo -e "\n\nRunning test {}"; HASH=${{ steps.version-cache.outputs.version }}_$( echo {} | md5sum | cut -d " " -f 1); .Build/bin/phpunit --log-junit Logs/log/junit_${HASH}.xml --coverage-php Logs/coverage/coverage_${HASH}.cov --coverage-filter src/ {}'
