@@ -88,13 +88,13 @@ jobs:
         if: ${{ success() || failure() }}
         run: |
           ls -la .Log/coverage/
-          cat .Log/coverage/coverage_${HASH}.cov
+          cat .Log/coverage/coverage*.cov
 
       - name: Archive PHPUnit logs
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-logs-${{ runner.os }}-${{ matrix.php }}-${{ steps.version-cache.outputs.major }}-${{ matrix.coverage }}
-          path: .Log/*
+          path: .Log
           retention-days: 1
 
   merge:
