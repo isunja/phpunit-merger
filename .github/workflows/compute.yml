@@ -16,8 +16,8 @@ on:
 
 env:
   OS: '[ "ubuntu-latest" ]'
-  COVERAGE: '[ "~10.0.0", "~11.0.0", "~12.0.0" ]'
-  PHP: '[ "8.3", "8.4" ]'
+  COVERAGE: '[ "~12.0.0" ]'
+  PHP: '[ "8.3" ]'
   EXCLUDE: "[]"
 
 jobs:
