@@ -58,7 +58,7 @@ jobs:
         run: |
           php --version
           composer --version
-          mkdir -p Log/coverage/ Log/log/
+          mkdir -p Logs/coverage/ Logs/log/
 
       - name: Validate composer.json
         run: composer validate
@@ -82,19 +82,19 @@ jobs:
 
       - name: Run PHPUnit
         if: ${{ success() || failure() }}
-        run: find 'tests' -wholename '*Test.php' | parallel --gnu 'echo -e "\n\nRunning test {}"; HASH=${{ steps.version-cache.outputs.version }}_$( echo {} | md5sum | cut -d " " -f 1); .Build/bin/phpunit --log-junit Log/log/junit_${HASH}.xml --coverage-php Log/coverage/coverage_${HASH}.cov --coverage-filter src/ {}'
+        run: find 'tests' -wholename '*Test.php' | parallel --gnu 'echo -e "\n\nRunning test {}"; HASH=${{ steps.version-cache.outputs.version }}_$( echo {} | md5sum | cut -d " " -f 1); .Build/bin/phpunit --log-junit Logs/log/junit_${HASH}.xml --coverage-php Logs/coverage/coverage_${HASH}.cov --coverage-filter src/ {}'
 
       - name: coverage report
         if: ${{ success() || failure() }}
         run: |
-          ls -la Log/coverage/
-          cat Log/coverage/coverage*.cov
+          ls -la Logs/coverage/
+          cat Logs/coverage/coverage*.cov
 
       - name: Archive PHPUnit logs
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-logs-${{ runner.os }}-${{ matrix.php }}-${{ steps.version-cache.outputs.major }}-${{ matrix.coverage }}
-          path: Log/*
+          path: Logs
           retention-days: 1
 
   merge:
@@ -161,14 +161,14 @@ jobs:
           key: ${{ steps.restore-composer-cache.outputs.cache-primary-key }}
 
       - name: Merge log files
-        run: bin/phpunit-merger log Log/log/ Log/junit.xml
+        run: bin/phpunit-merger log Logs/log/ Logs/junit.xml
 
       - name: Merge coverage files
-        run: bin/phpunit-merger coverage Log/coverage/ Log/coverage.xml
+        run: bin/phpunit-merger coverage Logs/coverage/ Logs/coverage.xml
 
       - name: Archive PHPUnit logs
         uses: actions/upload-artifact@v4
         with:
           name: phpunit-logs-merged-${{ runner.os }}-${{ matrix.php }}-${{ matrix.coverage }}
-          path: Log/*
+          path: Logs/*
           retention-days: 1
