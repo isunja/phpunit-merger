@@ -84,6 +84,7 @@ jobs:
         with:
           name: phpunit-logs-${{ runner.os }}-${{ matrix.php }}-${{ steps.version-cache.outputs.major }}-${{ matrix.coverage }}
           path: .Log/*
+          include-hidden-files: true
           retention-days: 1
 
   merge:
@@ -160,4 +161,5 @@ jobs:
         with:
           name: phpunit-logs-merged-${{ runner.os }}-${{ matrix.php }}-${{ matrix.coverage }}
           path: .Log/*
+          include-hidden-files: true
           retention-days: 1
