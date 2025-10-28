@@ -18,6 +18,7 @@ env:
   OS: '[ "ubuntu-latest" ]'
   COVERAGE: '[ "~11.0.0", "~12.0.0" ]'
   PHP: '[ "8.2", "8.3" ]'
+  EXCLUDE: "[]"
 
 jobs:
   compute:
